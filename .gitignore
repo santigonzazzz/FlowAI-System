@@ -1,0 +1,49 @@
+# ── Python ───────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+
+# ── Entornos virtuales ────────────────────────────────────
+.venv/
+venv/
+env/
+
+# ── Variables de entorno (NUNCA subir) ────────────────────
+.env
+
+# ── Pytest / Coverage ─────────────────────────────────────
+.pytest_cache/
+htmlcov/
+.coverage
+.coverage.*
+
+# ── Node / Frontend ───────────────────────────────────────
+node_modules/
+dist/
+.cache/
+.parcel-cache/
+
+# ── Build outputs ─────────────────────────────────────────
+build/
+*.egg-info/
+dist-info/
+
+# ── Logs ──────────────────────────────────────────────────
+*.log
+logs/
+
+# ── OS ────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# ── IDEs ──────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ── Templates que no deben subirse ────────────────────────
+# (el .env.example SI debe subirse — es solo la plantilla)
