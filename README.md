@@ -190,13 +190,9 @@ Incoming message
 
 ## 📸 Screenshots
 
-> Dashboard — initial state
-
-![Dashboard](docs/screenshots/dashboard.png)
-
-> Message classified as `hot` via rule engine
-
-![Hot classification](docs/screenshots/result_hot.png)
+![Main](./screenshots/Main.png)
+![Hot](./screenshots/Hot.png)
+![Cold](./screenshots/Cold.png)
 
 ---
 
