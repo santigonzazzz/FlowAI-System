@@ -1,268 +1,304 @@
-# FlowAI — Intelligent Message Automation Engine
+# FlowAI
 
-> A full-stack system that classifies customer messages using AI and rule-based automation, then generates context-aware responses in real time.
+### AI-Powered Customer Message Automation Platform
 
----
+FlowAI is a full-stack application that combines deterministic business rules with Large Language Models (LLMs) to automatically classify customer messages and generate intelligent responses in real time.
 
-## 🚀 Overview
+Instead of relying exclusively on AI, FlowAI first evaluates configurable business rules. Only messages that cannot be resolved deterministically are forwarded to an LLM, reducing latency and inference costs while maintaining natural conversations.
 
-FlowAI simulates a real-world customer automation pipeline. When a message comes in, the system first checks a configurable rule engine for known patterns — if a match is found, a predefined response fires instantly. If no rule matches, the message is passed to **Groq's LLaMA 3.3-70B model**, which classifies the intent and generates a natural language response.
-
-The result is a hybrid automation system that combines the **speed of deterministic rules** with the **flexibility of large language models** — without relying entirely on either.
-
-This type of architecture is used in production customer support, sales automation, and CRM enrichment pipelines.
+The project demonstrates practical AI integration, backend architecture and automation patterns commonly found in CRM, customer support and sales platforms.
 
 ---
 
-## 🔥 Why This Project Matters
+# 📸 Preview
 
-Most businesses handle customer messages manually — a sales rep reads the message, decides if it's a real lead, and writes a response. This process doesn't scale.
+> **Project Screenshot / GIF Here**
 
-FlowAI automates that workflow by:
-
-- **Automatically classifying leads** — every incoming message is evaluated and labeled as `hot`, `warm`, or `cold` based on purchase intent
-- **Reducing manual work** — predefined rules handle the most common cases instantly, without hitting the AI at all
-- **Improving response time** — customers get a relevant, context-aware response in milliseconds, not hours
-
-What makes this system different is its **hybrid approach**:
-
-- A **rule engine** handles known patterns with deterministic speed (no latency, no cost)
-- A **large language model** (Groq / LLaMA 3.3-70B) handles everything else with reasoning and context
-
-This combination mirrors how modern CRM and automation platforms like HubSpot, Intercom, and Salesforce work internally — rules for known cases, AI for everything else.
+<!--
+Add screenshots of:
+- Dashboard
+- Message classification
+- Conversation history
+-->
 
 ---
 
-## 🧠 Features
-
-- **AI-powered classification** — Categorizes messages as `hot`, `warm`, or `cold` based on purchase intent
-- **Rule engine** — Keyword-triggered overrides that run before the AI, enabling instant deterministic responses
-- **Graceful fallback** — If the Groq API is unavailable, the system falls back to keyword-based classification automatically
-- **Structured outputs** — Responses from the AI are validated with Pydantic before being returned, ensuring consistent data shapes
-- **In-memory store** — Messages are persisted in memory with full metadata (classification, response, rule match flag)
-- **Interactive dashboard** — React frontend to send messages, visualize classification results, and browse history
-- **CORS-enabled API** — Fully decoupled frontend and backend with proper CORS configuration
-- **Modular architecture** — Services, routes, schemas, and models are completely separated for easy scaling
-
----
-
-## 🛠 Tech Stack
+# 🚀 Tech Stack
 
 ### Backend
-- **FastAPI** — High-performance async web framework
-- **Pydantic v2** — Runtime data validation and settings management
-- **Pydantic Settings** — Environment variable management via `.env`
-- **Uvicorn** — ASGI server with hot reload
 
-### AI Layer
-- **Groq API** — Inference endpoint for LLaMA 3.3-70B (via OpenAI-compatible SDK)
-- **OpenAI Python SDK** — Used as the HTTP client with `base_url` pointing to Groq
+- Python
+- FastAPI
+- Pydantic
+- PostgreSQL (planned)
 
 ### Frontend
-- **React 18** — Component-based UI
-- **Vite** — Fast development server and bundler
-- **Vanilla CSS** — Custom dark-mode design system with glassmorphism
+
+- React
+- TypeScript
+- Vite
+
+### AI
+
+- Groq API
+- LLaMA 3.3
+- Prompt Engineering
+
+### DevOps
+
+- Git
+- Docker
+- GitHub Actions
 
 ---
 
-## 📁 Project Structure
+# 💡 Why I Built This
+
+Many companies receive hundreds of customer messages every day.
+
+Some questions are repetitive and can be answered instantly, while others require contextual reasoning.
+
+Instead of sending every request directly to an LLM, FlowAI combines deterministic business logic with artificial intelligence to create a faster and more efficient automation pipeline.
+
+This hybrid approach reduces costs, improves response time and demonstrates how modern AI products are commonly designed.
+
+---
+
+# ✨ Key Features
+
+- AI-powered message classification
+- Hybrid Rule Engine + LLM architecture
+- Automatic response generation
+- Keyword-based fallback logic
+- Structured API responses
+- Modular backend architecture
+- Interactive React dashboard
+- REST API with FastAPI
+
+---
+
+# 🧠 AI Workflow
+
+Every incoming message follows the same decision pipeline.
 
 ```
+Incoming Message
+        │
+        ▼
+ Rule Engine
+        │
+ ┌──────┴────────┐
+ │               │
+Match         No Match
+ │               │
+ ▼               ▼
+Return      Groq LLM
+Response         │
+                 ▼
+          Intent Classification
+                 │
+                 ▼
+       Response Generation
+                 │
+                 ▼
+      Pydantic Validation
+                 │
+                 ▼
+        Return Response
+```
+
+If the AI service becomes unavailable, the system automatically falls back to deterministic keyword classification.
+
+---
+
+# 🏗️ Architecture
+
+The project is divided into independent layers following separation of concerns.
+
+```
+React Frontend
+       │
+       ▼
+ FastAPI API
+       │
+       ▼
+Message Service
+       │
+ ┌─────┴──────────┐
+ │                │
+ ▼                ▼
+Rule Engine    AI Service
+                  │
+                  ▼
+              Groq API
+```
+
+Each service is isolated, making it easy to replace the AI provider or extend the business logic.
+
+---
+
+# 📂 Project Structure
+
+```text
 FlowAI/
+
 ├── backend/
+│
 │   ├── app/
-│   │   ├── config/           # Pydantic Settings (env vars, GROQ config)
-│   │   ├── models/           # Domain models (Message dataclass)
-│   │   ├── routes/           # HTTP route handlers (health, messages)
-│   │   ├── schemas/          # Request & response schemas
-│   │   └── services/
-│   │       ├── ai_service.py       # Groq integration + fallback logic
-│   │       ├── rule_engine.py      # Keyword-based rule matching
-│   │       └── message_service.py  # Orchestration layer
-│   ├── .env.example
-│   └── requirements.txt
+│   │
+│   ├── config/
+│   ├── models/
+│   ├── routes/
+│   ├── schemas/
+│   ├── services/
+│   └── main.py
 │
 ├── frontend/
-│   └── src/
-│       ├── components/       # MessageForm, ResultCard, HistoryPanel
-│       ├── services/         # api.js (fetch wrapper)
-│       └── App.jsx
 │
-├── .gitignore
+│   ├── src/
+│   ├── components/
+│   └── services/
+│
 └── README.md
 ```
 
 ---
 
-## ⚙️ Installation & Setup
+# ⚙️ How It Works
 
-### Prerequisites
-- Python 3.11+
-- Node.js 18+
-- A [Groq API key](https://console.groq.com/keys)
+The application processes every message through four stages.
+
+### 1. Rule Evaluation
+
+The Rule Engine searches predefined business rules.
+
+If a rule matches, the workflow finishes immediately.
 
 ---
 
-### Backend
+### 2. AI Classification
+
+If no rule applies, the message is sent to Groq.
+
+The LLM determines:
+
+- Customer intent
+- Classification
+- Natural language response
+
+---
+
+### 3. Validation
+
+Every AI response is validated through Pydantic before reaching the frontend.
+
+---
+
+### 4. Storage
+
+The processed message is stored together with:
+
+- Original message
+- Classification
+- Generated response
+- AI / Rule indicator
+- Timestamp
+
+---
+
+# 🧪 Example Request
+
+```http
+POST /messages
+```
+
+```json
+{
+    "content":"I'd like to know your pricing."
+}
+```
+
+---
+
+# Example Response
+
+```json
+{
+    "classification":"hot",
+    "response":"Our pricing starts at $29/month.",
+    "rule_matched":true
+}
+```
+
+---
+
+# 🛠️ Getting Started
+
+## Backend
 
 ```bash
 cd backend
 
-# Create and activate virtual environment
-python -m venv .venv
-.venv\Scripts\activate        # Windows
-source .venv/bin/activate     # macOS / Linux
-
-# Install dependencies
 pip install -r requirements.txt
 
-# Configure environment
-cp .env.example .env
-# Edit .env and add your GROQ_API_KEY
-
-# Start the API server
 uvicorn app.main:app --reload
 ```
 
-API available at: `http://localhost:8000`  
-Interactive docs: `http://localhost:8000/docs`
-
 ---
 
-### Frontend
+## Frontend
 
 ```bash
 cd frontend
 
 npm install
+
 npm run dev
 ```
 
-Dashboard available at: `http://localhost:5173`
-
 ---
 
-## 📡 API Reference
+## Environment Variables
 
-| Method | Endpoint    | Description                          |
-|--------|-------------|--------------------------------------|
-| `GET`  | `/health`   | Returns `{ "status": "ok" }`         |
-| `POST` | `/messages` | Process and classify a message       |
-| `GET`  | `/messages` | Return all processed messages        |
-
-### POST /messages
-
-**Request**
-```json
-{
-  "content": "I'd like to know your pricing plans"
-}
-```
-
-**Response**
-```json
-{
-  "id": "3f1a8c12-...",
-  "content": "I'd like to know your pricing plans",
-  "created_at": "2026-04-01T21:00:00Z",
-  "classification": "hot",
-  "response": "Great timing! Let me share our pricing right away...",
-  "rule_matched": true
-}
+```env
+GROQ_API_KEY=your_api_key
 ```
 
 ---
 
-## 🧪 Example Request
+# 🎯 Engineering Highlights
 
-Send a message to the API and get back a classification, an automated response, and a flag indicating whether a rule or the AI handled it.
+This project demonstrates:
 
-**Request**
-```http
-POST http://localhost:8000/messages
-Content-Type: application/json
-
-{
-  "content": "I want to know the price"
-}
-```
-
-**Response**
-```json
-{
-  "id": "a1b2c3d4-...",
-  "content": "I want to know the price",
-  "created_at": "2026-04-02T20:00:00Z",
-  "classification": "hot",
-  "response": "We'll share our pricing right away. Our plans start at $29/month and a dedicated advisor will send you a personalized quote within 10 minutes.",
-  "rule_matched": true
-}
-```
-
-> `rule_matched: true` means the response was generated by the rule engine — no AI call was made. `false` means Groq handled it.
+- AI Integration
+- Prompt Engineering
+- REST API Design
+- FastAPI
+- Backend Architecture
+- Service Layer Pattern
+- Separation of Concerns
+- Rule Engines
+- Hybrid AI Systems
+- Pydantic Validation
+- React Integration
 
 ---
 
-## 🔄 System Flow
+# 🔮 Future Improvements
 
-```
-Incoming message
-       │
-       ▼
- Rule Engine ──── keyword match? ────► Yes ──► Use rule (classification + response)
-       │                                              │
-       ▼ No                                           │
-  Groq LLM ─────────────────────────────────────────►│
-  (llama-3.3-70b-versatile)                          │
-       │                                             │
-       ▼                                             │
-  Pydantic validation                                │
-       │                                             │
-       └──────────────────────────────────────────── ▼
-                                            Merge results
-                                                  │
-                                                  ▼
-                                         Save to store + return
-
-  * If Groq API fails at any point → fallback to keyword classification
-```
-
-### Classification Logic
-
-| Label  | Intent       | Example trigger                        |
-|--------|--------------|----------------------------------------|
-| `hot`  | Ready to buy | "price", "quote", "buy", "contract"    |
-| `warm` | Interested   | "how does it work", "tell me more"     |
-| `cold` | Neutral      | general greetings, off-topic messages  |
+- PostgreSQL persistence
+- JWT Authentication
+- Rule Management Dashboard
+- Streaming Responses
+- Analytics Dashboard
+- Webhooks
+- Docker Compose
+- CI/CD Pipeline
 
 ---
 
-## 📸 Screenshots
+# 📄 License
 
-![Main](./screenshots/Main.png)
-![Hot](./screenshots/Hot.png)
-![Cold](./screenshots/Cold.png)
+This project is intended for educational and portfolio purposes.
 
----
-
-## 📌 Future Improvements
-
-- [ ] **Database integration** — Replace in-memory store with PostgreSQL via SQLAlchemy (models and services are already structured for this)
-- [ ] **Authentication** — JWT-based auth to secure the API and support multi-tenant setups
-- [ ] **Rule management UI** — CRUD interface to create, edit, and prioritize rules without touching code
-- [ ] **Streaming responses** — Use Groq's streaming API for faster perceived response times
-- [ ] **Analytics dashboard** — Charts for classification distribution, rule match rate, and response quality over time
-- [ ] **Webhook support** — Trigger external actions (CRM updates, notifications) based on classification outcome
-- [ ] **Docker + CI/CD** — Containerize both services and automate deployments
-
----
-
-## 👨‍💻 Author
-
-Built as a portfolio project demonstrating real-world patterns in AI-integrated backend systems.
-
-If you have questions or want to discuss the architecture, feel free to reach out.
-
----
-
-> **Note:** The `.env` file is gitignored. Copy `.env.example` and add your own `GROQ_API_KEY` to run the AI layer. The system works without it using the keyword-based fallback.
+Feel free to explore the architecture and adapt ideas for your own projects.
