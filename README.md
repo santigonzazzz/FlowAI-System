@@ -12,14 +12,19 @@ The project demonstrates practical AI integration, backend architecture and auto
 
 # 📸 Preview
 
-> **Project Screenshot / GIF Here**
+| Dashboard | Clasificación HOT (regla automática) | Clasificación COLD (IA) |
+|:---:|:---:|:---:|
+| ![Dashboard](screenshots/01-main.png) | ![Clasificacion HOT](screenshots/03-hot.png) | ![Clasificacion COLD](screenshots/05-cold.png) |
 
-<!--
-Add screenshots of:
-- Dashboard
-- Message classification
-- Conversation history
--->
+| Estado de procesamiento | Historial de conversaciones | Vista móvil |
+|:---:|:---:|:---:|
+| ![Procesando](screenshots/07-cargando.png) | ![Historial](screenshots/06-historial.png) | ![Movil](screenshots/08-movil.png) |
+
+Más capturas en [`screenshots/`](screenshots/):
+
+- `02-escribiendo.png` — entrada del mensaje del cliente
+- `04-warm.png` — lead WARM detectado por regla (`demo`)
+- `05-cold.png` — mensaje resuelto por el motor de IA (fallback de palabras clave sin `GROQ_API_KEY`)
 
 ---
 
@@ -263,6 +268,36 @@ npm run dev
 ```env
 GROQ_API_KEY=your_api_key
 ```
+
+---
+
+# ☁️ Deploy en Netlify
+
+El frontend ya trae [`netlify.toml`](netlify.toml) listo para Netlify. Netlify aloja el frontend (sitio estático); el backend FastAPI vive aparte.
+
+### Opción A — Netlify Drop (la más rápida)
+
+```bash
+cd frontend
+npm install
+npm run build          # genera frontend/dist
+```
+
+Luego arrastra la carpeta `frontend/dist` a https://app.netlify.com/drop.
+
+### Opción B — Conectar el repo a Netlify
+
+1. En Netlify: *Add new site → Import an existing project → GitHub* y elige este repo.
+2. Netlify lee `netlify.toml` (base `frontend`, publish `dist`) automáticamente.
+
+### Conectar el backend
+
+El sitio llama rutas relativas (`/messages`), así que tienes dos formas de apuntarlo a tu backend:
+
+1. **Variable de build (recomendada):** en *Site configuration → Environment variables* define `VITE_API_URL=https://tu-backend.onrender.com` y redespliega. Además, en el backend define `CORS_ORIGINS=https://tu-sitio.netlify.app` (ver `backend/.env.example`).
+2. **Proxy de Netlify:** descomenta los bloques `[[redirects]]` de `netlify.toml` y reemplaza `https://TU-BACKEND` por tu URL; así las llamadas quedan en el mismo origen y no necesitas tocar CORS.
+
+> Para desplegar el backend gratis: Render / Railway / Fly.io sirven el `uvicorn app.main:app` tal cual.
 
 ---
 

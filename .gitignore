@@ -47,3 +47,7 @@ Desktop.ini
 
 # ── Templates que no deben subirse ────────────────────────
 # (el .env.example SI debe subirse — es solo la plantilla)
+
+# Paquetes de deploy generados localmente
+*.zip
+

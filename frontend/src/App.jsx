@@ -3,6 +3,7 @@ import MessageForm from "./components/MessageForm";
 import ResultCard from "./components/ResultCard";
 import HistoryPanel from "./components/HistoryPanel";
 import { postMessage } from "./services/api";
+import { API_LABEL, AI_ENGINE } from "./services/config";
 
 export default function App() {
   const [result, setResult]   = useState(null);
@@ -64,7 +65,7 @@ export default function App() {
 
         {/* Footer */}
         <footer className="footer">
-          API: <code>localhost:8000</code> · Motor: Groq llama-3.3-70b
+          API: <code>{API_LABEL}</code> · Motor: {AI_ENGINE}
         </footer>
       </div>
     </div>

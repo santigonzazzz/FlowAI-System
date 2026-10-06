@@ -4,7 +4,7 @@
  * y facilita cambiar la base URL en un unico lugar.
  */
 
-const API_BASE = "http://localhost:8000";
+import { API_BASE } from "./config";
 
 /**
  * Envia un mensaje al motor de procesamiento.

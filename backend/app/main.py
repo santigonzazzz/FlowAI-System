@@ -20,15 +20,15 @@ app = FastAPI(
 )
 
 # ---------------------------------------------------------------------------
-# CORS — permite que el frontend React (puerto 5173) consuma la API
+# CORS — origenes configurables por entorno (settings.CORS_ORIGINS)
+# Local: frontend Vite (5173). Produccion: dominio de Netlify, etc.
+# Con "*" se desactivan las credenciales (no son compatibles con wildcard).
 # ---------------------------------------------------------------------------
+_origins = settings.cors_origin_list
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",
-        "http://127.0.0.1:5173",
-    ],
-    allow_credentials=True,
+    allow_origins=_origins,
+    allow_credentials="*" not in _origins,
     allow_methods=["*"],
     allow_headers=["*"],
 )
