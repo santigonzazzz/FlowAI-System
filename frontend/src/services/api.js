@@ -23,6 +23,15 @@ export async function postMessage(content) {
     throw new Error(err?.detail || `Error ${res.status}`);
   }
 
+  // Un sitio estatico sin backend puede responder index.html (SPA) con 200;
+  // en ese caso no hay API detras y lo avisamos explicitamente.
+  const ct = res.headers.get("content-type") || "";
+  if (!ct.includes("application/json")) {
+    throw new Error(
+      "Backend no disponible: este sitio es una demo visual. Configura VITE_API_URL o el proxy de netlify.toml."
+    );
+  }
+
   return res.json();
 }
 

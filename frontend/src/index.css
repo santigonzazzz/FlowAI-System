@@ -386,3 +386,16 @@ body {
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border-hover); border-radius: 99px; }
+/* ── Banner de demo visual (sin backend) ─────────────────── */
+.demo-banner {
+  width: 100%;
+  max-width: 860px;
+  margin: 0 auto 1.25rem;
+  padding: 0.7rem 1rem;
+  font-size: 0.82rem;
+  color: var(--text-sub);
+  background: var(--surface);
+  border: 1px solid var(--warm-border);
+  border-radius: var(--radius-sm);
+  text-align: center;
+}

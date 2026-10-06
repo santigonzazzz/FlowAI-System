@@ -3,7 +3,7 @@ import MessageForm from "./components/MessageForm";
 import ResultCard from "./components/ResultCard";
 import HistoryPanel from "./components/HistoryPanel";
 import { postMessage } from "./services/api";
-import { API_LABEL, AI_ENGINE } from "./services/config";
+import { API_LABEL, AI_ENGINE, HAS_BACKEND } from "./services/config";
 
 export default function App() {
   const [result, setResult]   = useState(null);
@@ -44,6 +44,14 @@ export default function App() {
             Motor de clasificacion y automatizacion con IA
           </p>
         </header>
+
+        {/* Aviso cuando el sitio estatico no tiene backend detras */}
+        {!HAS_BACKEND && (
+          <div className="demo-banner">
+            🖼️ Demo visual — el procesamiento en vivo corre en el backend
+            FastAPI. Instrucciones de deploy en el README.
+          </div>
+        )}
 
         {/* Panel principal */}
         <main className="main-panel">

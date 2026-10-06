@@ -26,5 +26,8 @@ export const API_LABEL = ENV_URL
     ? "localhost:8000"
     : "sin backend (define VITE_API_URL)";
 
+/** True si hay un backend al que llamar (dev con proxy o VITE_API_URL). */
+export const HAS_BACKEND = Boolean(ENV_URL) || import.meta.env.DEV;
+
 /** Motor de IA declarado por el backend. */
 export const AI_ENGINE = import.meta.env.VITE_AI_ENGINE || "Groq llama-3.3-70b";
