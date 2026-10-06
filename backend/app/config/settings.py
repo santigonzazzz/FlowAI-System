@@ -25,6 +25,16 @@ class Settings(BaseSettings):
     # Preparado para base de datos (sin usar aun)
     # DATABASE_URL: str = "postgresql+asyncpg://user:pass@localhost/db"
 
+    # -- CORS -----------------------------------------------------------------
+    # Lista separada por comas. Usar "*" para permitir cualquier origen
+    # (p. ej. cuando el frontend vive en Netlify y la API en otro host).
+    CORS_ORIGINS: str = "http://localhost:5173,http://127.0.0.1:5173"
+
+    @property
+    def cors_origin_list(self) -> list[str]:
+        """Devuelve CORS_ORIGINS como lista limpia de origenes."""
+        return [o.strip() for o in self.CORS_ORIGINS.split(",") if o.strip()]
+
     model_config = {
         "env_file": ".env",
         # utf-8-sig elimina el BOM automaticamente si el archivo lo tiene

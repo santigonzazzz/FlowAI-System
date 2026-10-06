@@ -3,6 +3,7 @@ import MessageForm from "./components/MessageForm";
 import ResultCard from "./components/ResultCard";
 import HistoryPanel from "./components/HistoryPanel";
 import { postMessage } from "./services/api";
+import { API_LABEL, AI_ENGINE, HAS_BACKEND } from "./services/config";
 
 export default function App() {
   const [result, setResult]   = useState(null);
@@ -44,6 +45,14 @@ export default function App() {
           </p>
         </header>
 
+        {/* Aviso cuando el sitio estatico no tiene backend detras */}
+        {!HAS_BACKEND && (
+          <div className="demo-banner">
+            🖼️ Demo visual — el procesamiento en vivo corre en el backend
+            FastAPI. Instrucciones de deploy en el README.
+          </div>
+        )}
+
         {/* Panel principal */}
         <main className="main-panel">
           <MessageForm onSubmit={handleSubmit} loading={loading} />
@@ -64,7 +73,7 @@ export default function App() {
 
         {/* Footer */}
         <footer className="footer">
-          API: <code>localhost:8000</code> · Motor: Groq llama-3.3-70b
+          API: <code>{API_LABEL}</code> · Motor: {AI_ENGINE}
         </footer>
       </div>
     </div>
